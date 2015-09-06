@@ -1103,7 +1103,10 @@ class TimeField(_BaseFormattedField):
             return format_date_time(value, self.formats, pp)
         elif value and isinstance(value, datetime.datetime):
             return value.time()
-        return value
+        elif value is not None and isinstance(value, datetime.timedelta):
+            return (datetime.datetime.min + value).time()
+        else:
+            return value
 
     hour = property(_date_part('hour'))
     minute = property(_date_part('minute'))
